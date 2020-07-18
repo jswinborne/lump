@@ -1,0 +1,48 @@
+{
+  "recordLocator": "ABC123",
+  "officeId": "MSP1S200A",
+  "passengers": [
+    {
+      "type": "Adult",
+      "firstName": "John",
+      "lastName": "Doe",
+      "gender": "M",
+      "dob": "1978-02-19"
+    },
+    {
+      "type": "Adult",
+      "firstName": "Jane",
+      "lastName": "Doe",
+      "gender": "F",
+      "dob": "1979-02-20"
+    }
+  ],
+  "itinerary": {
+    "fares": [
+      {
+        "type": "Adult",
+        "baseFare": 300,
+        "taxes": 200,
+        "currency": "USD"
+      }
+    ],
+    "segments": [
+      {
+        "flightNumber": 1234,
+        "carrier": "DL",
+        "departureAirport": "MSP",
+        "departureDate": "2020-10-10 13:53",
+        "arrivalAirport": "LON",
+        "arrivalDate": "2020-10-10 22:30"
+      },
+      {
+        "flightNumber": 1245,
+        "carrier": "DL",
+        "departureAirport": "LON",
+        "departureDate": "2020-10-20 13:53",
+        "arrivalAirport": "MSP",
+        "arrivalDate": "2020-10-20 22:30"
+      }
+    ]
+  }
+}
