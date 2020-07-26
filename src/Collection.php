@@ -2,7 +2,7 @@
 
 namespace Jswinborne\Lump;
 
-class Collection extends \ArrayObject
+class Collection extends \ArrayObject implements \Serializable, \JsonSerializable
 {
     public static function create($array)
     {
@@ -69,4 +69,21 @@ class Collection extends \ArrayObject
         return $this;
     }
 
+    /**
+     * @return mixed
+     */
+    public function jsonSerialize()
+    {
+        return $this->toJson();
+    }
+
+    public function toJson()
+    {
+        return json_encode($this);
+    }
+
+    public function toArray()
+    {
+        return (array)$this;
+    }
 }
