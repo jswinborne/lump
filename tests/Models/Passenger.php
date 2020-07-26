@@ -1,5 +1,4 @@
 <?php
-
 namespace Jswinborne\Tests\Models;
 
 use Jswinborne\Lump\Lump;
