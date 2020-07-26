@@ -1,5 +1,4 @@
 <?php
-
 namespace Jswinborne\Lump;
 
 use stdClass;
@@ -20,9 +19,18 @@ class Lump implements \Serializable, \JsonSerializable
      */
     protected $properties;
 
+    /**
+     * @param string $json
+     * @return static
+     * @throws \Exception
+     */
     public static function fromJson(string $json)
     {
-        return new static(json_decode($json));
+        $json = json_decode($json);
+        if($json) {
+            return new static($json);
+        }
+        throw new \Exception('invalid json data.');
     }
 
     /**
@@ -77,7 +85,7 @@ class Lump implements \Serializable, \JsonSerializable
     {
         $method = 'set' . ucfirst($property) . 'Property';
         if (method_exists($this, $method) && !$raw) {
-            $this->$method($value);
+            $this->properties[$property] = $this->$method($value);
         } else {
             $this->properties[$property] = $value;
         }
