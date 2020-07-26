@@ -22,9 +22,10 @@
     "fares": [
       {
         "type": "Adult",
-        "baseFare": 300,
+        "baseFare": 300.2223,
         "taxes": 200,
-        "currency": "USD"
+        "currency": "USD",
+        "expirationDate": "2020-04-04 17:00"
       }
     ],
     "segments": [
