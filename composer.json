@@ -1,12 +1,17 @@
 {
-    "name": "jswinborne/lump",
-    "minimum-stability": "stable",
-    "require": {
-        "ext-json": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "jswinborne\\lump\\": "src"
-        }
+  "name": "jswinborne/lump",
+  "minimum-stability": "stable",
+  "require": {
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jswinborne\\Lump\\": "src/"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Jswinborne\\Tests\\": "tests/"
+    }
+  }
 }

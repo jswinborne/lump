@@ -2,13 +2,13 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use jswinborne\lump\Lump;
-use jswinborne\lump\LumpFactory;
+use jswinborne\lump\Factory;
 
 $json = file_get_contents(__DIR__.'/test.json');
 
-$lump = Lump::fromJson($json);
+$booking = Lump::fromJson($json);
 
-$result = $lump->passengers->where('gender','==','M');
+$result = $booking->passengers->where('gender','==','M');
 
 print_r($result);
 

@@ -1,17 +1,24 @@
 <?php
 
-namespace jswinborne\lump;
+namespace Jswinborne\Lump;
 
-class LumpFactory
+class Factory
 {
-    private static $aliases;
+    private static $aliases = [
+        'date' => \DateTime::class
+    ];
 
-    public static final function create($name, $data = [])
+    public static final function create($name, $data = null)
     {
-        if (class_exists($name)) {
-            return (!is_object($data)) ? new $name($data) : $data;
-        } elseif (self::has($name)) {
-            return new self::$aliases[$name]($data);
+        if (self::has($name)) {
+            $creator = self::$aliases[$name];
+            if(is_callable($creator)) {
+                return call_user_func_array($creator, $data);
+            } elseif (class_exists($creator)) {
+                return (!$data instanceof $creator) ? new $creator($data) : $data;
+            }
+        } elseif (class_exists($name)) {
+            return (!$data instanceof $name) ? new $name($data) : $data;
         } else {
             throw new \Exception("$name not found.");
         }

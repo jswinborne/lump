@@ -1,6 +1,6 @@
 <?php
 
-namespace jswinborne\lump;
+namespace Jswinborne\Lump;
 
 use stdClass;
 
@@ -11,8 +11,8 @@ use stdClass;
 class Lump implements \Serializable, \JsonSerializable
 {
 
+    protected static $dates = [];
     public static $suppressWarnings = true;
-    public static $useCollections = true;
     public static $simpleDebug = true;
 
     /**
@@ -22,15 +22,7 @@ class Lump implements \Serializable, \JsonSerializable
 
     public static function fromJson(string $json)
     {
-        return new self(json_decode($json));
-    }
-
-    public static function collection($array=[])
-    {
-        if(static::$useCollections && !($array instanceof Collection)) {
-            return Collection::create($array);
-        }
-        return $array;
+        return new static(json_decode($json));
     }
 
     /**
@@ -51,14 +43,16 @@ class Lump implements \Serializable, \JsonSerializable
      */
     public function hydrate($data)
     {
-        foreach ($data as $property => $value) {
-            if ($value instanceof stdClass) {
+        foreach ((array)$data as $property => $value) {
+            $method = 'hydrate' . ucfirst($property);
+            if (method_exists(static::class, $method)) {
+                $this->$property = static::$method($value);
+            } elseif (in_array($property, static::$dates)) {
+                $this->$property = Factory::create('date', $value);
+            } elseif ($value instanceof stdClass) {
                 $this->$property = new Lump($value);
             } elseif (is_array($value) && count($value) > 0) {
-                $this->$property = static::collection();
-                foreach ($value as $index => $subValue) {
-                    $this->$property[$index] = new Lump($subValue);
-                }
+                $this->$property = Collection::hydrate(Lump::class, $value);
             } else {
                 $this->$property = $value;
             }

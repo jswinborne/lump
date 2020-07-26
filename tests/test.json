@@ -1,6 +1,7 @@
 {
   "recordLocator": "ABC123",
   "officeId": "MSP1S200A",
+  "createdAt" : "2020-04-04 17:03",
   "passengers": [
     {
       "type": "Adult",
