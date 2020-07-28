@@ -1,0 +1,15 @@
+{
+  "description": "A simple library for working with JSON and data objects.",
+  "authors": {
+    "name": "Jeremy Swinborne",
+    "email": "jeremy@swinborne.com"
+  },
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "vuepress": "^1.5.2"
+  }
+}

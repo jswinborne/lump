@@ -1,16 +1,15 @@
 <?php
-
-use Jswinborne\Tests\Models\Booking;
+use Jswinborne\Tests\Models;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 
 $json = file_get_contents(__DIR__.'/test.json');
 
-$booking = Booking::fromJson($json);
+$booking = Models\Booking::fromJson($json);
 
-//print_r($booking);
+print_r($booking);
 
-$passenger = $booking->passengers;
+//$passenger = $booking->passengers;
 
-print_r($passenger->sortBy('firstName'));
+//print_r($passenger->sortBy('firstName'));
