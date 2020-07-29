@@ -23,7 +23,7 @@ class Booking extends Lump
      * @return Collection
      */
     protected static function hydratePassengers($data) {
-        return Collection::hydrate(Passenger::class, $data);
+        return Collection::hydrate($data, Passenger::class);
     }
 
     /**

@@ -9,7 +9,21 @@ class Collection extends \ArrayObject implements \Serializable, \JsonSerializabl
         return new static($array);
     }
 
-    public static function hydrate($type, $array)
+    /**
+     * @param string $json
+     * @param string $type
+     * @return static
+     * @throws \Exception
+     */
+    public static function hydrateFromJson($json, $type = Lump::class) {
+        $data = json_decode($json);
+        if(is_array($data)){
+            return static::hydrate($data, $type);
+        }
+        throw new \Exception('Invalid JSON data. Must be a valid JSON array.');
+    }
+
+    public static function hydrate(array $array, $type = Lump::class)
     {
         $collection = new static();
         foreach ($array as $value) {

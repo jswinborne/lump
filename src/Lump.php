@@ -1,8 +1,6 @@
 <?php
 namespace Jswinborne\Lump;
 
-use stdClass;
-
 /**
  * Class Lump
  * @package jswinborne\lump
@@ -13,10 +11,8 @@ class Lump implements \Serializable, \JsonSerializable
     protected static $dates = [];
     public static $suppressWarnings = true;
     public static $simpleDebug = true;
+    public static $autoDates = true;
 
-    /**
-     * @var
-     */
     protected $properties;
 
     /**
@@ -56,16 +52,35 @@ class Lump implements \Serializable, \JsonSerializable
             if (method_exists(static::class, $method)) {
                 $this->$property = static::$method($value);
             } elseif (in_array($property, static::$dates)) {
-                $this->$property = Factory::create('date', $value);
-            } elseif ($value instanceof stdClass) {
+                $this->$property = Factory::createDate($value);
+            } elseif ($value instanceof \stdClass) {
                 $this->$property = new Lump($value);
             } elseif (is_array($value) && count($value) > 0) {
-                $this->$property = Collection::hydrate(Lump::class, $value);
+                $this->$property = Collection::hydrate($value);
             } else {
-                $this->$property = $value;
+                if(static::$autoDates && static::detectDate($property)) {
+                    try {
+                        $this->$property = Factory::createDate($value);
+                    } catch(\Exception $ex) {
+                        $this->$property = $value;
+                    }
+                } else {
+                    $this->$property = $value;
+                }
             }
         }
         return $this;
+    }
+
+    protected function detectDate($string) {
+        if(stristr($string, 'date') !== false) {
+            return true;
+        } elseif(substr($string,-2) == 'At') {
+            return true;
+        } elseif(substr($string, -3) == '_at') {
+            return true;
+        }
+        return false;
     }
 
     protected function &getProperty($property, $raw = false)

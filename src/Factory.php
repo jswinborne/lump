@@ -2,17 +2,41 @@
 
 namespace Jswinborne\Lump;
 
+/**
+ * Class Factory
+ * @package Jswinborne\Lump
+ * @method static mixed createDate(string $date)
+ */
 class Factory
 {
-    private static $aliases = [
-        'date' => \DateTime::class
-    ];
+    private static $aliases = [];
 
-    public static final function create($name, $data = null)
+    /**
+     * @param $name
+     * @param $arguments
+     * @return \DateTime|mixed|null
+     * @throws \Exception
+     */
+    public static function __callStatic($name, $arguments)
+    {
+        $property = lcfirst(substr($name, 6));
+        if(substr($name,0,6) == 'create' && static::has($property)) {
+            return static::create($property, $arguments[0]);
+        } elseif($property == 'date') {
+            if(class_exists('\Carbon\Carbon')) {
+                return \Carbon\Carbon::parse($arguments[0]);
+            } else {
+                return new \DateTime($arguments[0]);
+            }
+        }
+        throw new \Exception("static method $name is not defined.");
+    }
+
+    public static function create($name, $data = null)
     {
         if (self::has($name)) {
             $creator = self::$aliases[$name];
-            if(is_callable($creator)) {
+            if (is_callable($creator)) {
                 return call_user_func_array($creator, $data);
             } elseif (class_exists($creator)) {
                 return (!$data instanceof $creator) ? new $creator($data) : $data;
@@ -29,7 +53,7 @@ class Factory
      * @param $aliasName
      * @param $modelName
      */
-    public static function changeAlias($aliasName, $modelName)
+    public static function addAlias($aliasName, $modelName)
     {
         self::$aliases[$aliasName] = $modelName;
     }

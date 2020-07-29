@@ -14,5 +14,11 @@
     "psr-4": {
       "Jswinborne\\Tests\\": "tests/"
     }
+  },
+  "suggest": {
+    "nesbot/carbon": "When available dates will be created using Carbon instead of DateTime."
+  },
+  "require-dev": {
+    "nesbot/carbon": "^2.37"
   }
 }
