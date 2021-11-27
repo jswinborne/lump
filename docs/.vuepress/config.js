@@ -12,7 +12,10 @@ module.exports = {
             },
         ],
         sidebar: [
-            '/',
+            {
+                title: 'Getting Started',
+                path: '/pages/intro',
+            },
             {
                 title: 'Documentation',
                 collapsable: true,

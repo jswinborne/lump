@@ -19,10 +19,10 @@ class Factory
      */
     public static function __callStatic($name, $arguments)
     {
-        $property = lcfirst(substr($name, 6));
+        $property = substr($name, 6);
         if(substr($name,0,6) == 'create' && static::has($property)) {
-            return static::create($property, $arguments[0]);
-        } elseif($property == 'date') {
+            return static::create($property, $arguments[0]??[]);
+        } elseif(strtolower($property) == 'date') {
             if(class_exists('\Carbon\Carbon')) {
                 return \Carbon\Carbon::parse($arguments[0]);
             } else {
@@ -30,6 +30,11 @@ class Factory
             }
         }
         throw new \Exception("static method $name is not defined.");
+    }
+
+    public static function collection($data, $name)
+    {
+
     }
 
     public static function create($name, $data = null)

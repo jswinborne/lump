@@ -19,6 +19,7 @@
     "nesbot/carbon": "When available dates will be created using Carbon instead of DateTime."
   },
   "require-dev": {
-    "nesbot/carbon": "^2.37"
+    "nesbot/carbon": "^2.37",
+    "phpunit/phpunit": "^9.2"
   }
 }

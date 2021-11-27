@@ -1,5 +1,5 @@
 <?php
-namespace Jswinborne\Tests\Models;
+namespace Jswinborne\Tests\Examples\Models;
 
 use Jswinborne\Lump\Collection;
 use Jswinborne\Lump\Lump;
@@ -15,11 +15,11 @@ class Itinerary extends Lump
 {
     protected static function hydrateFares($data)
     {
-        return Collection::hydrate(Fare::class, $data);
+        return Collection::create($data, Fare::class);
     }
 
     protected static function hydrateSegments($data)
     {
-        return Collection::hydrate(Segment::class, $data);
+        return Collection::create($data, Segment::class);
     }
 }

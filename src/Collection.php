@@ -4,9 +4,11 @@ namespace Jswinborne\Lump;
 
 class Collection extends \ArrayObject implements \Serializable, \JsonSerializable
 {
-    public static function create($array)
+    public static function create(array $array = [], $type = Lump::class)
     {
-        return new static($array);
+        $collection = new static();
+        $collection->hydrate($array, $type);
+        return $collection;
     }
 
     /**
@@ -15,21 +17,26 @@ class Collection extends \ArrayObject implements \Serializable, \JsonSerializabl
      * @return static
      * @throws \Exception
      */
-    public static function hydrateFromJson($json, $type = Lump::class) {
+    public static function fromJson($json, $type = Lump::class)
+    {
         $data = json_decode($json);
-        if(is_array($data)){
-            return static::hydrate($data, $type);
+        if (is_array($data)) {
+            return static::create($data, $type);
         }
         throw new \Exception('Invalid JSON data. Must be a valid JSON array.');
     }
 
-    public static function hydrate(array $array, $type = Lump::class)
+    public function hydrate(array $array, $type = Lump::class)
     {
-        $collection = new static();
         foreach ($array as $value) {
-            $collection[] = Factory::create($type, $value);
+            if($value instanceof \stdClass) {
+                $this[] = Factory::create($type, $value);
+            } else {
+                $this[] = $value;
+            }
+
         }
-        return $collection;
+        return $this;
     }
 
     public function where($property, $operator, $value)
@@ -88,12 +95,12 @@ class Collection extends \ArrayObject implements \Serializable, \JsonSerializabl
      */
     public function jsonSerialize()
     {
-        return $this->toJson();
+        return $this->toArray();
     }
 
     public function toJson()
     {
-        return json_encode($this);
+        return json_encode($this->toArray());
     }
 
     public function toArray()

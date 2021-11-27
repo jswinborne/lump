@@ -1,5 +1,5 @@
 <?php
-namespace Jswinborne\Tests\Models;
+namespace Jswinborne\Tests\Examples\Models;
 
 use Jswinborne\Lump\Collection;
 use Jswinborne\Lump\Lump;
@@ -23,7 +23,7 @@ class Booking extends Lump
      * @return Collection
      */
     protected static function hydratePassengers($data) {
-        return Collection::hydrate($data, Passenger::class);
+        return Factory::createCollection($data, Passenger::class);
     }
 
     /**

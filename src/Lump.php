@@ -41,6 +41,27 @@ class Lump implements \Serializable, \JsonSerializable
         $this->hydrate((array)$data);
     }
 
+    public static function create(array $data = [])
+    {
+        return new static($data);
+    }
+
+
+
+    /**
+     * @param string $json
+     * @return $this
+     * @throws \Exception
+     */
+    public function json(string $json)
+    {
+        $data = json_decode($json);
+        if($data) {
+            return $this->hydrate($data);
+        }
+        throw new \Exception('invalid json data.');
+    }
+
     /**
      * @param $data
      * @return $this
@@ -56,7 +77,7 @@ class Lump implements \Serializable, \JsonSerializable
             } elseif ($value instanceof \stdClass) {
                 $this->$property = new Lump($value);
             } elseif (is_array($value) && count($value) > 0) {
-                $this->$property = Collection::hydrate($value);
+                $this->$property = Collection::create()->hydrate($value);
             } else {
                 if(static::$autoDates && static::detectDate($property)) {
                     try {
@@ -158,6 +179,10 @@ class Lump implements \Serializable, \JsonSerializable
     public function jsonSerialize()
     {
         return $this->properties;
+    }
+
+    public function toJson() {
+        return json_encode($this->properties);
     }
 
     /**
